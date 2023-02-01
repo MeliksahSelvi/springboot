@@ -3,9 +3,10 @@ package com.uniyaz.springboot.rest;
 import com.uniyaz.springboot.core.converter.PhoneConverter;
 import com.uniyaz.springboot.core.converter.PhoneVerifyConverter;
 import com.uniyaz.springboot.core.domain.Phone;
-import com.uniyaz.springboot.core.domain.PhoneVerify;
 import com.uniyaz.springboot.core.dto.CountVerifyNumberDto;
 import com.uniyaz.springboot.core.dto.PhoneDto;
+import com.uniyaz.springboot.core.dto.PhoneExampleDto;
+import com.uniyaz.springboot.core.integration.RapidApiClientService;
 import com.uniyaz.springboot.core.service.PhoneService;
 import com.uniyaz.springboot.core.service.PhoneVerifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @RestController
 public class VerifyController {
@@ -35,75 +32,30 @@ public class VerifyController {
     @Autowired
     PhoneVerifyConverter phoneVerifyConverter;
 
+    @Autowired
+    RapidApiClientService rapidApiClientService;
+
     @GetMapping(path = "verifyNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
     public PhoneDto verifyNumber(@RequestParam(value = "phone") String phoneNumber) throws IOException, InterruptedException {
-
-        HttpRequest httpRequest = createRequestWithParameters(phoneNumber);
-
-        HttpResponse<String> response = createResponseWithRequest(httpRequest);
-
-        PhoneDto phoneDto = phoneConverter.convertBodyToPhoneDtoWithGson(response);
-        Phone phoneByNumber = phoneService.findPhoneByNumber(phoneDto.getLocal_number());
-
-        PhoneVerify phoneVerify = phoneVerifyConverter.convertPhoneToPhoneVerify(phoneByNumber);
-        phoneVerifyService.save(phoneVerify);
-
+        PhoneDto phoneDto = rapidApiClientService.verifyNumber(phoneNumber);
         return phoneDto;
     }
 
-    @GetMapping(path = "countOfVerifyNumber",params = "phone",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CountVerifyNumberDto countOfVerifyNumber(@RequestParam(value = "phone") String phoneNumber){
+    @GetMapping(path = "exampleNumber", params = {"country_code", "type"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PhoneExampleDto exampleNumber(@RequestParam(value = "country_code") String countryCode, @RequestParam(value = "type") String type) throws IOException, InterruptedException {
+        PhoneExampleDto phoneExampleDto = rapidApiClientService.exampleNumber(countryCode, type);
+        return phoneExampleDto;
+    }
 
-        Phone phoneByNumber = phoneService.findPhoneByNumber(phoneNumber);
-        Long countVerifyNumber = phoneVerifyService.countVerifyNumber(phoneNumber);
-        CountVerifyNumberDto dto = phoneConverter.convertPhoneAndVerifyCountToDto(phoneByNumber, countVerifyNumber);
+    @GetMapping(path = "countOfVerifyNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CountVerifyNumberDto countOfVerifyNumber(@RequestParam(value = "phone") String phoneNumber) {
+        CountVerifyNumberDto dto = rapidApiClientService.countOfVerifyNumber(phoneNumber);
         return dto;
     }
 
-    @GetMapping(path = "saveNumber",params = "phone",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Phone saveNumber(@RequestParam(value = "phone") String phoneNumber){
-
-        HttpRequest httpRequest=createRequestWithParameters(phoneNumber);
-        HttpResponse responseWithRequest = createResponseWithRequest(httpRequest);
-
-
-        PhoneDto phoneDto = phoneConverter.convertBodyToPhoneDtoWithGson(responseWithRequest);
-        Phone phone = phoneConverter.convertDtoToPhone(phoneDto);
-        return phoneService.saveNumber(phone);
-    }
-
-    private String buildUrlWithParameters(String parameter) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("https://veriphone.p.rapidapi.com/verify?phone=")
-                .append(parameter);
-
-        return String.valueOf(stringBuilder);
-    }
-
-    private HttpRequest createRequestWithParameters(String phoneNumber) {
-        String url = buildUrlWithParameters(phoneNumber);
-
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("X-RapidAPI-Key", "febe89f4bamsh68c82ec849630a4p148e7fjsnc2c924851fcc")
-                .header("X-RapidAPI-Host", "veriphone.p.rapidapi.com")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-
-        return httpRequest;
-    }
-
-    private HttpResponse createResponseWithRequest(HttpRequest httpRequest) {
-        HttpResponse response;
-        try {
-            response = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+    @GetMapping(path = "saveNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Phone saveNumber(@RequestParam(value = "phone") String phoneNumber) {
+        Phone phone = rapidApiClientService.saveNumber(phoneNumber);
+        return phone;
     }
 }

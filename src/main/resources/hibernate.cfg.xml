@@ -17,7 +17,7 @@
         <property name="hibernate.connection.autocommit">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="com.uniyaz.springboot.core.domain.Phone"/>
         <mapping class="com.uniyaz.springboot.core.domain.PhoneVerify"/>
     </session-factory>

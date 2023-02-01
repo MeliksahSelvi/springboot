@@ -17,7 +17,7 @@ public class PhoneDao {
         SessionFactory sessionFactory = HelperFactory.getSessionFactory();
         Session currentSession = sessionFactory.openSession();
         Query query = currentSession.createQuery(hql);
-        currentSession.close();
+        query.setParameter("phone",phoneNumber);
         return (Phone) query.uniqueResult();
     }
 

@@ -11,7 +11,6 @@ public class HelperFactory {
 
         SessionFactory sessionFactory = null;
         try {
-
             Configuration configuration = new Configuration();
             sessionFactory = configuration.configure().buildSessionFactory();
             return sessionFactory;
