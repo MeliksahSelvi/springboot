@@ -14,9 +14,9 @@ public class PhoneVerifyDao {
     public Long countVerifyNumber(String phoneNumber) {
         String hql = "select count(phone) from PhoneVerify phoneVerify left join phoneVerify.phone phone where phone.localNumber =:phoneNumber";
         SessionFactory sessionFactory = HelperFactory.getSessionFactory();
-        Session currentSession = sessionFactory.getCurrentSession();
+        Session currentSession = sessionFactory.openSession();
         Query query = currentSession.createQuery(hql);
-
+        query.setParameter("phoneNumber",phoneNumber);
         return (Long) query.uniqueResult();
     }
 

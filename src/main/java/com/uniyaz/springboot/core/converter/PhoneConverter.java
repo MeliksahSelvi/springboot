@@ -25,7 +25,8 @@ public class PhoneConverter {
 
     public Phone convertDtoToPhone(PhoneDto dto) {
         Phone phone = new Phone();
-        phone.setLocalNumber(dto.getLocal_number());
+        String trim = dto.getLocal_number().replace(" ","");
+        phone.setLocalNumber(trim);
         phone.setPhoneType(dto.getPhone_type());
         phone.setPhoneValid(dto.getPhone_valid());
         phone.setCarrier(dto.getCarrier());

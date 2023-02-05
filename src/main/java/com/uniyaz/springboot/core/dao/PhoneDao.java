@@ -13,11 +13,11 @@ public class PhoneDao {
 
     public Phone findPhoneByNumber(String phoneNumber) {
 
-        String hql = "select phone From Phone phone where phone.localNumber =:phone";
+        String hql = "select phone From Phone phone where phone.localNumber =:phoneNumber";
         SessionFactory sessionFactory = HelperFactory.getSessionFactory();
         Session currentSession = sessionFactory.openSession();
         Query query = currentSession.createQuery(hql);
-        query.setParameter("phone",phoneNumber);
+        query.setParameter("phoneNumber",phoneNumber);
         return (Phone) query.uniqueResult();
     }
 

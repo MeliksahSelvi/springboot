@@ -1,17 +1,14 @@
 package com.uniyaz.springboot.rest;
 
-import com.uniyaz.springboot.core.converter.PhoneConverter;
-import com.uniyaz.springboot.core.converter.PhoneVerifyConverter;
 import com.uniyaz.springboot.core.domain.Phone;
 import com.uniyaz.springboot.core.dto.CountVerifyNumberDto;
 import com.uniyaz.springboot.core.dto.PhoneDto;
 import com.uniyaz.springboot.core.dto.PhoneExampleDto;
 import com.uniyaz.springboot.core.integration.RapidApiClientService;
-import com.uniyaz.springboot.core.service.PhoneService;
-import com.uniyaz.springboot.core.service.PhoneVerifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,22 +18,16 @@ import java.io.IOException;
 public class VerifyController {
 
     @Autowired
-    PhoneService phoneService;
-
-    @Autowired
-    PhoneVerifyService phoneVerifyService;
-
-    @Autowired
-    PhoneConverter phoneConverter;
-
-    @Autowired
-    PhoneVerifyConverter phoneVerifyConverter;
-
-    @Autowired
     RapidApiClientService rapidApiClientService;
 
     @GetMapping(path = "verifyNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
     public PhoneDto verifyNumber(@RequestParam(value = "phone") String phoneNumber) throws IOException, InterruptedException {
+        PhoneDto phoneDto = rapidApiClientService.verifyNumber(phoneNumber);
+        return phoneDto;
+    }
+    //postman'da parametreyi url ile değil body form data olarak göndermek için post methodu eklendi.
+    @PostMapping(path = "verifyNumber2", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PhoneDto verifyNumber2(@RequestParam(value = "phone") String phoneNumber) throws IOException, InterruptedException {
         PhoneDto phoneDto = rapidApiClientService.verifyNumber(phoneNumber);
         return phoneDto;
     }

@@ -34,13 +34,14 @@ public class RapidApiClientService {
     @Autowired
     PhoneVerifyConverter phoneVerifyConverter;
 
-    public PhoneDto verifyNumber(String phoneNumber){
+    public PhoneDto verifyNumber(String phoneNumber) {
         HttpRequest httpRequest = createRequestVerifyNumber(phoneNumber);
 
         HttpResponse<String> response = createResponseWithRequest(httpRequest);
 
         PhoneDto phoneDto = phoneConverter.convertBodyToPhoneDtoWithGson(response);
-        Phone phoneByNumber = phoneService.findPhoneByNumber(phoneDto.getLocal_number());
+        String trimNumber = trimString(phoneDto.getLocal_number());
+        Phone phoneByNumber = phoneService.findPhoneByNumber(trimNumber);
 
         PhoneVerify phoneVerify = phoneVerifyConverter.convertPhoneToPhoneVerify(phoneByNumber);
         phoneVerifyService.save(phoneVerify);
@@ -58,22 +59,25 @@ public class RapidApiClientService {
     public PhoneExampleDto exampleNumber(String countryCode, String type) {
         HttpRequest httpRequest = createRequestExampleNumber(countryCode, type);
         HttpResponse<String> response = createResponseWithRequest(httpRequest);
-        String body = response.body();
 
-        PhoneExampleDto phoneExampleDto = new Gson().fromJson(body, PhoneExampleDto.class);
-        Phone phoneByNumber = phoneService.findPhoneByNumber(phoneExampleDto.getLocal_number());
+        PhoneExampleDto phoneExampleDto = phoneConverter.convertBodyToPhoneExampleDtoWithGson(response);
+        String trimNumber = trimString(phoneExampleDto.getLocal_number());
 
+        Phone phoneByNumber = phoneService.findPhoneByNumber(trimNumber);
         PhoneVerify phoneVerify = phoneVerifyConverter.convertPhoneToPhoneVerify(phoneByNumber);
         phoneVerifyService.save(phoneVerify);
 
         return phoneExampleDto;
     }
 
+    private String trimString(String trim){
+        return trim.replace(" ","");
+    }
+
     public Phone saveNumber(String phoneNumber) {
         HttpRequest httpRequest = createRequestVerifyNumber(phoneNumber);
         HttpResponse<String> responseWithRequest = createResponseWithRequest(httpRequest);
-        String body = responseWithRequest.body();
-        PhoneDto phoneDto = new Gson().fromJson(body, PhoneDto.class);
+        PhoneDto phoneDto = phoneConverter.convertBodyToPhoneDtoWithGson(responseWithRequest);
         Phone phone = phoneConverter.convertDtoToPhone(phoneDto);
         return phoneService.saveNumber(phone);
     }
