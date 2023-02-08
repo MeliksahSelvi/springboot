@@ -1,36 +1,14 @@
 package com.uniyaz.springboot.core.dao;
 
 import com.uniyaz.springboot.core.domain.PhoneVerify;
-import com.uniyaz.springboot.helper.HelperFactory;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PhoneVerifyDao {
+public interface PhoneVerifyDao extends JpaRepository<PhoneVerify, Long> {
 
-    public Long countVerifyNumber(String phoneNumber) {
-        String hql = "select count(phone) from PhoneVerify phoneVerify left join phoneVerify.phone phone where phone.localNumber =:phoneNumber";
-        SessionFactory sessionFactory = HelperFactory.getSessionFactory();
-        Session currentSession = sessionFactory.openSession();
-        Query query = currentSession.createQuery(hql);
-        query.setParameter("phoneNumber",phoneNumber);
-        return (Long) query.uniqueResult();
-    }
-
-    public PhoneVerify save(PhoneVerify phoneVerify) {
-        try {
-            SessionFactory sessionFactory = HelperFactory.getSessionFactory();
-            Session currentSession = sessionFactory.getCurrentSession();
-            Transaction transaction = currentSession.beginTransaction();
-            phoneVerify = (PhoneVerify) currentSession.merge(phoneVerify);
-            transaction.commit();
-            currentSession.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return phoneVerify;
-    }
+    @Query("select count(phone) from PhoneVerify phoneVerify left join phoneVerify.phone phone where phone.localNumber =:phoneNumber")
+    Long countVerifyNumber(@Param(value = "phoneNumber") String phoneNumber);
 }

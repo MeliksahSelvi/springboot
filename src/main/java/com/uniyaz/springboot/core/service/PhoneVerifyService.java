@@ -15,7 +15,7 @@ public class PhoneVerifyService {
         phoneVerifyDao.save(phoneVerify);
     }
 
-    public Long countVerifyNumber(String phoneNumber){
+    public Long countVerifyNumber(String phoneNumber) {
         return phoneVerifyDao.countVerifyNumber(phoneNumber);
     }
 }

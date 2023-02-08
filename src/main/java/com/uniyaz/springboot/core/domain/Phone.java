@@ -1,7 +1,7 @@
 package com.uniyaz.springboot.core.domain;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PHONE")
