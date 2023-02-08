@@ -7,10 +7,7 @@ import com.uniyaz.springboot.core.dto.PhoneExampleDto;
 import com.uniyaz.springboot.core.integration.RapidApiClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -43,8 +40,8 @@ public class VerifyController {
         CountVerifyNumberDto dto = rapidApiClientService.countOfVerifyNumber(phoneNumber);
         return dto;
     }
-
-    @GetMapping(path = "saveNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
+    //todo putmapping olabilir mi acaba?
+    @PutMapping(path = "saveNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
     public Phone saveNumber(@RequestParam(value = "phone") String phoneNumber) {
         Phone phone = rapidApiClientService.saveNumber(phoneNumber);
         return phone;
