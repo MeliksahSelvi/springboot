@@ -1,6 +1,6 @@
 Kullanılan Teknolojiler
 
-#Spring Boot
-#Spring Web MVC
-#Spring Data JPA
-#Java 17
+#Spring Boot  
+#Spring Web MVC  
+#Spring Data JPA  
+#Java 17  
