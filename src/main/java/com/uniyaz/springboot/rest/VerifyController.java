@@ -40,7 +40,7 @@ public class VerifyController {
         CountVerifyNumberDto dto = rapidApiClientService.countOfVerifyNumber(phoneNumber);
         return dto;
     }
-    //todo putmapping olabilir mi acaba?
+
     @PutMapping(path = "saveNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)
     public Phone saveNumber(@RequestParam(value = "phone") String phoneNumber) {
         Phone phone = rapidApiClientService.saveNumber(phoneNumber);
