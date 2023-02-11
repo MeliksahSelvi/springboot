@@ -1,15 +1,14 @@
-package com.uniyaz.springboot.helper;
+package com.uniyaz.springboot.utility.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 //@Configuration
-public class MyConfig {
+public class HibernateConfig {
 
     @Bean
     public LocalSessionFactoryBean factoryBean2(DataSource dataSource, Properties hibernateProperties, String packagesToScan) {
