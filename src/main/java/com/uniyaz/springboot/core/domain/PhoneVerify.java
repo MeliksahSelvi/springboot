@@ -1,10 +1,17 @@
 package com.uniyaz.springboot.core.domain;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@ToString
 @Table(name = "PHONE_VERIFY")
 public class PhoneVerify {
 
@@ -20,33 +27,4 @@ public class PhoneVerify {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date verifyDate;
-
-    @Override
-    public String toString() {
-        return "-";
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Phone getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Phone phone) {
-        this.phone = phone;
-    }
-
-    public Date getVerifyDate() {
-        return verifyDate;
-    }
-
-    public void setVerifyDate(Date verifyDate) {
-        this.verifyDate = verifyDate;
-    }
 }
