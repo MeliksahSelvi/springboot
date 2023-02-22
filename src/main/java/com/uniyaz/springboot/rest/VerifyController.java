@@ -7,17 +7,17 @@ import com.uniyaz.springboot.core.dto.PhoneExampleDto;
 import com.uniyaz.springboot.core.integration.RapidApiClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/melik")
 @Tag(description = "Veriphone API", name = "Verify Controller")
 public class VerifyController {
 
-    @Autowired
-    RapidApiClientService rapidApiClientService;
+    private final RapidApiClientService rapidApiClientService;
 
     @Operation(description = "Verify Number With GET Method")
     @GetMapping(path = "verifyNumber", params = "phone", produces = MediaType.APPLICATION_JSON_VALUE)

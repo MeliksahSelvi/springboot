@@ -10,7 +10,7 @@ import com.uniyaz.springboot.core.dto.PhoneExampleDto;
 import com.uniyaz.springboot.core.service.PhoneService;
 import com.uniyaz.springboot.core.service.PhoneVerifyService;
 import com.uniyaz.springboot.utility.helper.Constanst;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,19 +20,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Service
+@RequiredArgsConstructor
 public class RapidApiClientService {
 
-    @Autowired
-    PhoneService phoneService;
+    private final PhoneService phoneService;
 
-    @Autowired
-    PhoneVerifyService phoneVerifyService;
+    private final PhoneVerifyService phoneVerifyService;
 
-    @Autowired
-    PhoneConverter phoneConverter;
+    private final PhoneConverter phoneConverter;
 
-    @Autowired
-    PhoneVerifyConverter phoneVerifyConverter;
+    private final PhoneVerifyConverter phoneVerifyConverter;
 
     public PhoneDto verifyNumber(String phoneNumber) {
         HttpRequest httpRequest = createRequestVerifyNumber(phoneNumber);

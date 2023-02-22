@@ -4,9 +4,7 @@ import com.uniyaz.springboot.core.domain.Phone;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface PhoneDao extends JpaRepository<Phone, Long> {
 
     @Query("select phone From Phone phone where phone.localNumber =:phoneNumber")

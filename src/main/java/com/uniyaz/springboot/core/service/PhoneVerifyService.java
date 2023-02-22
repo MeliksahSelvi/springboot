@@ -2,14 +2,14 @@ package com.uniyaz.springboot.core.service;
 
 import com.uniyaz.springboot.core.dao.PhoneVerifyDao;
 import com.uniyaz.springboot.core.domain.PhoneVerify;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PhoneVerifyService {
 
-    @Autowired
-    PhoneVerifyDao phoneVerifyDao;
+    private final PhoneVerifyDao phoneVerifyDao;
 
     public void save(PhoneVerify phoneVerify) {
         phoneVerifyDao.save(phoneVerify);

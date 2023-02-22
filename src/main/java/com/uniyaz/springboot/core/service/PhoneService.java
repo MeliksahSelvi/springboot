@@ -2,14 +2,14 @@ package com.uniyaz.springboot.core.service;
 
 import com.uniyaz.springboot.core.dao.PhoneDao;
 import com.uniyaz.springboot.core.domain.Phone;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PhoneService {
 
-    @Autowired
-    PhoneDao phoneDao;
+    private final PhoneDao phoneDao;
 
     public Phone findPhoneByNumber(String phoneNumber) {
         return phoneDao.findPhoneByNumber(phoneNumber);
