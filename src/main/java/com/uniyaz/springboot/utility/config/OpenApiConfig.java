@@ -11,14 +11,16 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("${application-description}") String description,
-                                 @Value("${application-version}") String version) {
+    public OpenAPI customOpenAPI(@Value("${application-title}") String title,
+                                 @Value("${application-description}") String description,
+                                 @Value("${application-version}") String version,
+                                 @Value("${application-license}") String license) {
 
         return new OpenAPI()
-                .info(new Info().title("Veriphone API")
+                .info(new Info().title(title)
                         .version(version)
                         .description(description)
-                        .license(new License().name("Veriphone API License")));
+                        .license(new License().name(license)));
 
     }
 }

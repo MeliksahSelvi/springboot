@@ -113,7 +113,7 @@ public class RapidApiClientService {
                 .uri(URI.create(url))
                 .header(Constanst.KEY, Constanst.KEY_VALUE)
                 .header(Constanst.HOST, Constanst.HOST_VALUE)
-                .method(Constanst.METHOD_NAME, HttpRequest.BodyPublishers.noBody())
+                .method(Constanst.GET_METHOD, HttpRequest.BodyPublishers.noBody())
                 .build();
 
         return httpRequest;
